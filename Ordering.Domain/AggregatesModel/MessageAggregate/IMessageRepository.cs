@@ -12,7 +12,7 @@ namespace Messaging.Domain.AggregatesModel.MessageAggregate
 
         void Update(Message order);
 
-        Task<Message> GetAsync(int messageId);
+        Task<Message> GetAsync(string messageId);
 
         Task<IEnumerable<Message>> GetAllAsync(int userId);
     }

@@ -1,4 +1,6 @@
-﻿using Messaging.Domain.SharedKernel;
+﻿using MediatR;
+using Messaging.Domain.SharedKernel;
+using Messaging.Infrastructure.Config;
 using Messaging.Infrastructure.Models.DbConfig;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -15,11 +17,12 @@ namespace Messaging.Infrastructure.Models
     {
         private readonly IMongoDatabase _database = null;
         private readonly IClientSessionHandle _session = null;
+        private readonly IMediator _mediator;
         private bool disposedValue;
 
-        public MongoContext(IDatabaseSettings settings)
+        public MongoContext(IDatabaseSettings settings, IMediator mediator)
         {
-            
+            _mediator = mediator;
             var client = new MongoClient(settings.ConnectionString);
             if (client != null)
             {
@@ -72,6 +75,7 @@ namespace Messaging.Infrastructure.Models
             try
             {
                 await _session.CommitTransactionAsync(cancellationToken);
+                await _mediator.DispatchDomainEventsAsync();
                 return true;
             }
             catch (Exception ex)

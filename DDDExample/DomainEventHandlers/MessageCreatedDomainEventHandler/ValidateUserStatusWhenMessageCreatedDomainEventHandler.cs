@@ -13,7 +13,7 @@ namespace Messaging.API.DomainEventHandlers.MessageCreatedDomainEventHandler
     {
         public async Task Handle(MessageCreatedDomainEvent messageCreatedEvent, CancellationToken cancellationToken)
         {
-            
+            //RabbitMQ Call
         }
     }
 }
